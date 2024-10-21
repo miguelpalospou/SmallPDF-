@@ -19,3 +19,4 @@ protoc-gen-openapiv2
 scikit-learn
 ruff
 pypdf
+PyPDF2
