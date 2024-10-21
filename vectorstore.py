@@ -5,6 +5,7 @@ def vectorstore(index_name, all_chunks, MODEL):
     from langchain_pinecone import PineconeVectorStore
     from pinecone import Pinecone
     from pinecone import ServerlessSpec
+    from langchain_openai.embeddings import OpenAIEmbeddings
     from langchain_ollama import OllamaEmbeddings, OllamaLLM
     # from langchain_community.llms import Ollama
     import streamlit as st

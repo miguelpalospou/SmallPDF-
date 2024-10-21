@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 load_dotenv(".env")
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") or st.secrets["OPENAI_API_KEY"]
-st.write(OPENAI_API_KEY)
+
 # Title of the app
 st.markdown("<h1 style='color: #3498db; text-align: center;'>SmallPDF: Chat with PDF using LLaMA</h1>", unsafe_allow_html=True)
 
@@ -23,7 +23,7 @@ st.write("Make sure the Pinecone API and the OpenAI are included in the keys sec
 
 
 # Step 3: Input the Pinecone Index Name
-index_name = st.text_input("Enter a name for the Pinecone Index:")
+st.session_state.index_name = st.text_input("Enter a name for the Pinecone Index:")
 
 # Step 3: Input the Pinecone Index Name
 st.session_state.MODEL = st.text_input("Please enter the model you want to use in quotes (gpt-4o-mini or mistral:7b)")
@@ -40,7 +40,7 @@ if pdf_docs and st.button("Submit & Process"):
         try:
             text = getpdf.getpdf(pdf_docs)
             text_chunks = getpdf.get_text_chunks(text)
-            st.session_state.vector = vectorstore.vectorstore(index_name=index_name, all_chunks=text_chunks, MODEL=st.session_state.MODEL)
+            st.session_state.vector = vectorstore.vectorstore(index_name=st.session_state.index_name, all_chunks=text_chunks, MODEL=st.session_state.MODEL)
             st.success("Processing complete!")
         except Exception as e:
             st.error(f"An error occurred during processing: {e}")
