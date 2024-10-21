@@ -45,4 +45,4 @@ question = st.text_input("Ask a question about the PDF:")
 if question:
     if st.button("Get Answer"):
         # Step 7: Retrieve the answer using the question
-        chain= chains.chains(question, pinecone=st.session_state.vector, model=st.session_state.MODEL)
+        chain = chains.chains(pinecone=st.session_state.vector, question=question, model=st.session_state.MODEL)
