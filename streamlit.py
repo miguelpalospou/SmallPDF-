@@ -29,7 +29,7 @@ index_name = st.text_input("Enter a name for the Pinecone Index:")
 # Step 3: Input the Pinecone Index Name
 MODEL = st.text_input("Please enter the model you want to use in quotes (gpt-4o-mini or mistral:7b)")
 
-model_output=model.model(MODEL=MODEL)
+
 
 # Ensure all necessary inputs are provided
 if st.button("Submit & Process"):
