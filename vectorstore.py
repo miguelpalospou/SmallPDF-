@@ -9,15 +9,12 @@ def vectorstore(index_name, all_chunks, MODEL):
     from langchain_community.llms import Ollama
 
 
-    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
     PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
     
     # Initialize embeddings with OpenAI API Key
     if MODEL.startswith("gpt"):
-        model= ChatOpenAI(api_key=OPENAI_API_KEY, model=MODEL)
         embeddings= OpenAIEmbeddings()
     else:
-        model= Ollama(model=MODEL)
         embeddings = OllamaEmbeddings()
 
     # Initialize Pinecone
