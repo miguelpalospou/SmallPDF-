@@ -29,10 +29,9 @@ def chains(pinecone, question, model):
 
     if model.startswith("gpt"):
         model= ChatOpenAI(api_key=OPENAI_API_KEY, model=model)
-        embeddings= OpenAIEmbeddings()
+
     else:
         model= Ollama(model=model)
-        embeddings = OllamaEmbeddings()
 
     retriever = pinecone.as_retriever()
 
