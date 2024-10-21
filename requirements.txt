@@ -20,3 +20,4 @@ scikit-learn
 ruff
 pypdf
 PyPDF2
+Ollama
