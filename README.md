@@ -1,6 +1,10 @@
 
 # Building a RAG application from scratch
 
+View on STREAMLIT deployed site: 
+**[Open Streamlit App](https://smallpdf.streamlit.app/)**
+![Alt text](images/streamlit.png)
+
 The goal of this project is to build a system that loads and reads multiple PDFs and enable users to interact with it through questions. It's built using LangChain, GPT4, LLaMA and a simple RAG (Retrieval-Augmented Generation) application using Pinecone and OpenAI's API. The application will allow you to ask questions about any company PDF
 
 ![Alt text](images/diagram.png)
