@@ -3,6 +3,7 @@ import model
 import getpdf
 import vectorstore
 import chains
+import os
 
 
 from dotenv import load_dotenv
@@ -10,6 +11,8 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv(".env")
 
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") or st.secrets["OPENAI_API_KEY"]
+st.write(OPENAI_API_KEY)
 # Title of the app
 st.markdown("<h1 style='color: #3498db; text-align: center;'>SmallPDF: Chat with PDF using LLaMA</h1>", unsafe_allow_html=True)
 
