@@ -1,5 +1,4 @@
 def getpdf(pdf_docs):
-    from langchain.document_loaders import PyPDFLoader
     from PyPDF2 import PdfReader
     
     text= ""
