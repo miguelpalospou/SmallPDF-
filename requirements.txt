@@ -21,4 +21,6 @@ ruff
 pypdf
 PyPDF2
 Ollama
--U langchain-ollama
+langchain-ollama
+
+
