@@ -1,53 +1,52 @@
-import streamlit as st
-import model
-import getpdf
-import vectorstore
-import chains
+def vectorstore(index_name, all_chunks, MODEL):
+    import os
+    from langchain_openai import OpenAIEmbeddings
+    from langchain_openai.chat_models import ChatOpenAI  # Correct import for ChatOpenAI
+    from langchain_pinecone import PineconeVectorStore
+    from pinecone import Pinecone
+    from pinecone import ServerlessSpec
+    import streamlit as st
 
+    # Load API keys
+    PINECONE_API_KEY = os.getenv("PINECONE_API_KEY") or st.secrets["PINECONE_API_KEY"]
+    
+    if MODEL.startswith("gpt"):
+        OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") or st.secrets["OPENAI_API_KEY"]
+        print("Using OpenAI API Key:", OPENAI_API_KEY is not None)  # Debugging output
+        embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
+    else:
+        print("Using Ollama embeddings (if needed) for model:", MODEL)  # Debugging output
+        from langchain_community.embeddings import OllamaEmbeddings
+        embeddings = OllamaEmbeddings()
 
-from dotenv import load_dotenv
+    # Initialize Pinecone
+    pc = Pinecone(api_key=PINECONE_API_KEY)
 
-# Load environment variables from .env file
-load_dotenv(".env")
+    # Create index in Pinecone
+    try:
+        pc.create_index(
+            name=index_name,
+            dimension=1536,
+            metric="cosine",
+            spec=ServerlessSpec(
+                cloud="aws",
+                region="us-east-1"
+            )
+        )
+        print("Pinecone index created successfully.")
+    except Exception as e:
+        print("Error creating Pinecone index:", e)
 
-# Title of the app
-st.markdown("<h1 style='color: #3498db; text-align: center;'>SmallPDF: Chat with PDF using LLaMA</h1>", unsafe_allow_html=True)
+    # Create Pinecone vector store
+    try:
+        pinecone = PineconeVectorStore.from_texts(
+            texts=all_chunks, 
+            embedding=embeddings, 
+            index_name=index_name,
+            pinecone_api_key=PINECONE_API_KEY
+        )
+        print("Pinecone vector store created successfully.")
+    except Exception as e:
+        print("Error creating Pinecone vector store:", e)
 
-# Input API Keys
-st.subheader("API Keys")
-st.write("Make sure the Pinecone API and the OpenAI are included in the keys section")
-
-
-
-# Step 3: Input the Pinecone Index Name
-index_name = st.text_input("Enter a name for the Pinecone Index:")
-
-# Step 3: Input the Pinecone Index Name
-st.session_state.MODEL = st.text_input("Please enter the model you want to use in quotes (gpt-4o-mini or mistral:7b)")
-
-# Step 1: Input YouTube Link
-with st.sidebar:
-        st.markdown("<h3 style='color: #2ecc71;'>Menu:</h3>", unsafe_allow_html=True)
-
-        pdf_docs = st.file_uploader("Upload your PDF Files and Click on the Submit & Process Button", accept_multiple_files=True)
-
-# Ensure all necessary inputs are provided
-if pdf_docs and st.button("Submit & Process"):
-    with st.spinner("Processing..."):
-        try:
-            text = getpdf.getpdf(pdf_docs)
-            text_chunks = getpdf.get_text_chunks(text)
-            st.session_state.vector = vectorstore.vectorstore(index_name=index_name, all_chunks=text_chunks, MODEL=st.session_state.MODEL)
-            st.success("Processing complete!")
-        except Exception as e:
-            st.error(f"An error occurred during processing: {e}")
-                
-
-# Step 6: Ask Questions
-question = st.text_input("Ask a question about the PDF:")
-
-if question:
-    if st.button("Get Answer"):
-        # Step 7: Retrieve the answer using the question
-        chain = chains.chains(pinecone=st.session_state.vector, question=question, model=st.session_state.MODEL)
-        st.write("Answer:", chain)
+    return pinecone
