@@ -27,17 +27,16 @@ with st.sidebar:
 index_name = st.text_input("Enter a name for the Pinecone Index:")
 
 # Step 3: Input the Pinecone Index Name
-MODEL = st.text_input("Please enter the model you want to use in quotes (gpt-4o-mini or mistral:7b)")
+st.session_state.MODEL = st.text_input("Please enter the model you want to use in quotes (gpt-4o-mini or mistral:7b)")
 
 
 
 # Ensure all necessary inputs are provided
 if st.button("Submit & Process"):
             with st.spinner("Processing..."):
-                MODEL=model.model(MODEL)
                 text = getpdf.getpdf(pdf_docs)
                 text_chunks = getpdf.get_text_chunks(text)
-                vector = vectorstore.vectorstore(index_name=index_name, all_chunks=text_chunks, MODEL=MODEL)
+                vector = vectorstore.vectorstore(index_name=index_name, all_chunks=text_chunks, MODEL=st.session_state.MODEL)
                 
 
 # Step 6: Ask Questions
