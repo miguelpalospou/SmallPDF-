@@ -32,7 +32,7 @@ MODEL = st.text_input("Please enter the model you want to use in quotes (gpt-4o-
 model_output=model.model(MODEL=MODEL)
 
 # Ensure all necessary inputs are provided
-if st.button("Submit & Process", style="background-color: #9b59b6; color: white; padding: 10px 20px; border: none; border-radius: 5px;"):  # Styled button
+if st.button("Submit & Process"):
             with st.spinner("Processing..."):
                 MODEL=model.model(MODEL)
                 text = getpdf.getpdf(pdf_docs)
