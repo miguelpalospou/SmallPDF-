@@ -14,7 +14,8 @@ def vectorstore(index_name, all_chunks, MODEL):
     
     # Initialize embeddings with OpenAI API Key
     if MODEL.startswith("gpt"):
-        embeddings= OpenAIEmbeddings()
+        OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") or st.secrets["OPENAI_API_KEY"]
+        embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
     else:
         embeddings = OllamaEmbeddings()
 
