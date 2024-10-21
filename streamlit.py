@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 load_dotenv(".env")
 
 # Title of the app
-st.header("<h1 style='color: #3498db; text-align: center;'>SmallPDF: Chat with PDF using Gemini</h1>", unsafe_allow_html=True)  # Colored header with center alignment
+st.header("<h1 style='color: #3498db; text-align: center;'>SmallPDF: Chat with PDF using LLaMA</h1>")  # Colored header with center alignment
 
 # Input API Keys
 st.subheader("API Keys")
