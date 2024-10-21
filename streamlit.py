@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 load_dotenv(".env")
 
 # Title of the app
-st.header("<h1 style='color: #3498db; text-align: center;'>SmallPDF: Chat with PDF using LLaMA</h1>")  # Colored header with center alignment
+st.markdown("<h1 style='color: #3498db; text-align: center;'>SmallPDF: Chat with PDF using LLaMA</h1>", unsafe_allow_html=True)
 
 # Input API Keys
 st.subheader("API Keys")
@@ -19,7 +19,7 @@ st.write("Make sure the Pinecone API and the OpenAI are included in the keys sec
 
 # Step 1: Input YouTube Link
 with st.sidebar:
-        st.title("<h3 style='color: #2ecc71;'>Menu:</h3>")  # Green colored sidebar title
+        st.markdown("<h3 style='color: #2ecc71;'>Menu:</h3>", unsafe_allow_html=True)
 
         pdf_docs = st.file_uploader("Upload your PDF Files and Click on the Submit & Process Button", accept_multiple_files=True)
 
