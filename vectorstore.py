@@ -5,7 +5,7 @@ def vectorstore(index_name, all_chunks, MODEL):
     from langchain_pinecone import PineconeVectorStore
     from pinecone import Pinecone
     from pinecone import ServerlessSpec
-    from langchain_community.embeddings import OllamaEmbeddings
+    from langchain_ollama import OllamaEmbeddings
     from langchain_community.llms import Ollama
     import streamlit as st
 
@@ -15,8 +15,10 @@ def vectorstore(index_name, all_chunks, MODEL):
     # Initialize embeddings with OpenAI API Key
     if MODEL.startswith("gpt"):
         OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") or st.secrets["OPENAI_API_KEY"]
+        model= ChatOpenAI(api_key=OPENAI_API_KEY, model=MODEL)
         embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
     else:
+        model= Ollama(model=MODEL)
         embeddings = OllamaEmbeddings()
 
     # Initialize Pinecone
