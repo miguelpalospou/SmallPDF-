@@ -10,10 +10,11 @@ def chains(pinecone, question, model):
     from langchain_openai.embeddings import OpenAIEmbeddings
     from langchain_community.llms import Ollama
     from langchain_community.embeddings import OllamaEmbeddings
+    import streamlit as st
 
     # Load from .env file if API keys are not provided (for standalone script)
     load_dotenv(".env")  # Load environment variables from .env file
-    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") or st.secrets["OPENAI_API_KEY"]
     
     template = """
     Answer the question based on the context below.

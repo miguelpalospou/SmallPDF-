@@ -7,9 +7,10 @@ def vectorstore(index_name, all_chunks, MODEL):
     from pinecone import ServerlessSpec
     from langchain_community.embeddings import OllamaEmbeddings
     from langchain_community.llms import Ollama
+    import streamlit as st
 
 
-    PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
+    PINECONE_API_KEY = os.getenv("PINECONE_API_KEY") or st.secrets["PINECONE_API_KEY"]
     
     # Initialize embeddings with OpenAI API Key
     if MODEL.startswith("gpt"):
