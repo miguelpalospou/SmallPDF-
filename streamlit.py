@@ -26,7 +26,8 @@ st.write("Make sure the Pinecone API and the OpenAI are included in the keys sec
 st.session_state.index_name = st.text_input("Enter a name for the Pinecone Index:")
 
 # Step 3: Input the Pinecone Index Name
-st.session_state.MODEL = st.text_input("Please enter the model you want to use in quotes (gpt-4o-mini or mistral:7b)")
+st.session_state.MODEL = st.text_input("Please enter the model you want to use (gpt-4o-mini or mistral:7b)."
+                                       "Bear in mind that if using a LLaMA model you can only **run this script locally** on your computer and you will need to **have it installed locally**")
 
 # Step 1: Input YouTube Link
 with st.sidebar:
