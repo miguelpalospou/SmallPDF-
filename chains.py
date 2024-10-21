@@ -3,6 +3,17 @@ def chains(pinecone, question, model):
     from langchain.prompts import ChatPromptTemplate
     from operator import itemgetter
     from langchain_core.runnables import RunnableParallel, RunnablePassthrough
+    import os
+    from dotenv import load_dotenv
+    from langchain_openai import ChatOpenAI
+    from langchain_openai.chat_models import ChatOpenAI
+    from langchain_openai.embeddings import OpenAIEmbeddings
+    from langchain_community.llms import Ollama
+    from langchain_community.embeddings import OllamaEmbeddings
+
+    # Load from .env file if API keys are not provided (for standalone script)
+    load_dotenv(".env")  # Load environment variables from .env file
+    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
     
     template = """
     Answer the question based on the context below.
@@ -15,6 +26,13 @@ def chains(pinecone, question, model):
     prompt= ChatPromptTemplate.from_template(template)
     
     parser=StrOutputParser()
+
+    if model.startswith("gpt"):
+        model= ChatOpenAI(api_key=OPENAI_API_KEY, model=model)
+        embeddings= OpenAIEmbeddings()
+    else:
+        model= Ollama(model=model)
+        embeddings = OllamaEmbeddings()
 
     retriever = pinecone.as_retriever()
 

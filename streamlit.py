@@ -36,7 +36,7 @@ if st.button("Submit & Process"):
             with st.spinner("Processing..."):
                 text = getpdf.getpdf(pdf_docs)
                 text_chunks = getpdf.get_text_chunks(text)
-                vector = vectorstore.vectorstore(index_name=index_name, all_chunks=text_chunks, MODEL=st.session_state.MODEL)
+                st.session_state.vector = vectorstore.vectorstore(index_name=index_name, all_chunks=text_chunks, MODEL=st.session_state.MODEL)
                 
 
 # Step 6: Ask Questions
@@ -45,4 +45,4 @@ question = st.text_input("Ask a question about the PDF:")
 if question:
     if st.button("Get Answer"):
         # Step 7: Retrieve the answer using the question
-        chain= chains.chains(vector, question, MODEL)
+        chain= chains.chains(vector=st.session_state.vector, question, model=st.session_state.MODEL)
