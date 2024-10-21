@@ -32,12 +32,15 @@ with st.sidebar:
         pdf_docs = st.file_uploader("Upload your PDF Files and Click on the Submit & Process Button", accept_multiple_files=True)
 
 # Ensure all necessary inputs are provided
-        if st.button("Submit & Process"):
-            with st.spinner("Processing..."):
-                text = getpdf.getpdf(pdf_docs)
-                text_chunks = getpdf.get_text_chunks(text)
-                st.session_state.vector = vectorstore.vectorstore(index_name=index_name, all_chunks=text_chunks, MODEL=st.session_state.MODEL)
-                st.success("Done!")
+if pdf_docs and st.button("Submit & Process"):
+    with st.spinner("Processing..."):
+        try:
+            text = getpdf.getpdf(pdf_docs)
+            text_chunks = getpdf.get_text_chunks(text)
+            st.session_state.vector = vectorstore.vectorstore(index_name=index_name, all_chunks=text_chunks, MODEL=st.session_state.MODEL)
+            st.success("Processing complete!")
+        except Exception as e:
+            st.error(f"An error occurred during processing: {e}")
                 
 
 # Step 6: Ask Questions
@@ -47,3 +50,4 @@ if question:
     if st.button("Get Answer"):
         # Step 7: Retrieve the answer using the question
         chain = chains.chains(pinecone=st.session_state.vector, question=question, model=st.session_state.MODEL)
+        st.write("Answer:", chain)
